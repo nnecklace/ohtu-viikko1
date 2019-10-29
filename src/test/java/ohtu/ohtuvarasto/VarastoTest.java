@@ -26,6 +26,33 @@ public class VarastoTest {
     }
 
     @Test
+    public void konstruktoriLuoTyhjanTilavuuden() {
+        Varasto tyhja = new Varasto(-1.0);
+        assertEquals(0.0, tyhja.getTilavuus(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void konstruktoriLuoVarastonAlkuTilvauudellaJaSaldolla() {
+        Varasto v = new Varasto(10.0, 12.0);
+        assertEquals(10.0, v.getTilavuus(), vertailuTarkkuus);
+        assertEquals(10.0, v.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void konstruktoriLuoVarastonNollaAlkuTilvauudellaJaNollaSaldolla() {
+        Varasto v = new Varasto(-1.0, -1.0);
+        assertEquals(0.0, v.getTilavuus(), vertailuTarkkuus);
+        assertEquals(0.0, v.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void konstruktoriLuoVarastonAlkuTilvauudellaJaSallitullaSaldolla() {
+        Varasto v = new Varasto(5.0, 3.0);
+        assertEquals(5.0, v.getTilavuus(), vertailuTarkkuus);
+        assertEquals(3.0, v.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
     public void uudellaVarastollaOikeaTilavuus() {
         assertEquals(10, varasto.getTilavuus(), vertailuTarkkuus);
     }
@@ -36,6 +63,20 @@ public class VarastoTest {
 
         // saldon pitäisi olla sama kun lisätty määrä
         assertEquals(8, varasto.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void lisaaVirheVarastoon() {
+        varasto.lisaaVarastoon(-1.0);
+
+        assertEquals(0, varasto.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void lisaaEnemmanKunMahtuu() {
+        varasto.lisaaVarastoon(100);
+
+        assertEquals(varasto.getTilavuus(), varasto.getSaldo(), vertailuTarkkuus);
     }
 
     @Test
@@ -65,4 +106,25 @@ public class VarastoTest {
         assertEquals(4, varasto.paljonkoMahtuu(), vertailuTarkkuus);
     }
 
+    @Test
+    public void otaVirheellinenVarastosta() {
+        double actual = varasto.otaVarastosta(-1.0);
+
+        assertEquals(0.0, actual, vertailuTarkkuus);
+    }
+
+    @Test
+    public void otaKaikkiMitaVoi() {
+        double actualSaldo = varasto.getSaldo();
+        double actualValue = varasto.otaVarastosta(1000.0);
+
+        assertEquals(actualValue, actualSaldo, vertailuTarkkuus);
+        assertEquals(0.0, varasto.getSaldo(), vertailuTarkkuus);
+    }
+
+    @Test
+    public void testToString() {
+        Varasto v = new Varasto(10);
+        assertEquals("saldo = 0.0, vielä tilaa 10.0", v.toString());
+    }
 }
