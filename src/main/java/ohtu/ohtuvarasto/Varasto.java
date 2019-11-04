@@ -8,28 +8,21 @@ public class Varasto {
 
     // --- konstruktorit: ---
     public Varasto(double tilavuus) {  // tilavuus on annettava
-        if (tilavuus > 0.0) {
-            this.tilavuus = tilavuus;
-        } else // virheellinen, nollataan
-        {
-            this.tilavuus = 0.0;  // => käyttökelvoton varasto
-        }
+        setTilavuus(tilavuus);
         saldo = 0;     // oletus: varasto on tyhjä
     }
 
     public Varasto(double tilavuus, double alkuSaldo) { // kuormitetaan
-        if (tilavuus > 0.0) {
-            this.tilavuus = tilavuus;
-        } else // virheellinen, nollataan
+        setTilavuus(tilavuus);
+
+        if (alkuSaldo < 0.0)
         {
-            this.tilavuus = 0.0;  // => käyttökelvoton varasto
-        }
-        if (alkuSaldo < 0.0) {
             this.saldo = 0.0;
         } else if (alkuSaldo <= tilavuus) // mahtuu
         {
             this.saldo = alkuSaldo;
-        } else {
+        } else
+        {
             this.saldo = tilavuus;  // täyteen ja ylimäärä hukkaan!
         }
     }
@@ -41,6 +34,16 @@ public class Varasto {
 
     public double getTilavuus() {
         return tilavuus;
+    }
+
+    public void setTilavuus(double tilavuus) {
+        if (tilavuus > 0.0)
+        {
+            this.tilavuus = tilavuus;
+        } else // virheellinen, nollataan
+        {
+            this.tilavuus = 0.0;  // => käyttökelvoton varasto
+        }
     }
 
     public double paljonkoMahtuu() {  // huom: ominaisuus voidaan myös laskea
@@ -56,7 +59,8 @@ public class Varasto {
         if (maara <= paljonkoMahtuu()) // omia aksessoreita voi kutsua
         {
             saldo = saldo + maara;          // ihan suoraan sellaisinaan
-        } else {
+        } else
+        {
             saldo = tilavuus;  // täyteen ja ylimäärä hukkaan!
         }
     }
@@ -66,7 +70,8 @@ public class Varasto {
         {
             return 0.0;   // tällainen pikapoistuminenkin!
         }
-        if (maara > saldo) {          // annetaan mitä voidaan
+        if (maara > saldo)          // annetaan mitä voidaan
+        {
             double kaikkiMitaVoidaan = saldo;
             saldo = 0.0;               // ja tyhjäksi menee
             return kaikkiMitaVoidaan;  // poistutaan saman tien
